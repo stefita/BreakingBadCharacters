@@ -18,7 +18,7 @@ data class CharacterData(
     @SerializedName("appearance") var appearance: List<Int>,
     @SerializedName("portrayed") var portrayed: String,
     @SerializedName("category") var category: String,
-    @SerializedName("betterCallSaulAppearance") var betterCallSaulAppearance: List<Int>
+    @SerializedName("betterCallSaulAppearance") var betterCallSaulAppearance: List<Int>?
 )
 
 class CharacterDataEntityMapper constructor() {

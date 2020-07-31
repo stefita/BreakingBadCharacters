@@ -1,6 +1,6 @@
-package com.stefita.domain.entities
+package com.stefita.presentation.entities
 
-data class CharacterEntity(
+data class CharactersSource(
     val id: Int = 0,
     val name: String = "",
     val birthday: String = "",
