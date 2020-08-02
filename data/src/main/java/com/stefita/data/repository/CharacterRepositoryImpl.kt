@@ -1,9 +1,7 @@
 package com.stefita.data.repository
 
-import androidx.lifecycle.LiveData
 import com.stefita.domain.entities.CharacterEntity
 import com.stefita.domain.repositories.CharacterRepository
-import kotlinx.coroutines.Deferred
 
 class CharacterRepositoryImpl(
     private val remote: CharactersRemoteImpl,
@@ -23,6 +21,11 @@ class CharacterRepositoryImpl(
     }
 
     override suspend fun getCharacters(): List<CharacterEntity> {
-        return getRemoteCharacters()
+        val cache = getLocalCharacters()
+        return if (cache.isEmpty()) {
+            getRemoteCharacters()
+        } else {
+            cache
+        }
     }
 }

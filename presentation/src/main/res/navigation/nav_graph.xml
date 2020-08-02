@@ -8,8 +8,20 @@
         android:name="com.stefita.presentation.characters.CharactersListFragment"
         android:label="CharactersListFragment" >
         <action
-            android:id="@+id/action_charactersListFragment_to_placeholder"
-            app:destination="@id/placeholder" />
+            android:id="@+id/toDetailesViewr"
+            app:destination="@id/characterDetailsFragment" >
+            <argument
+                android:name="character"
+                app:argType="com.stefita.presentation.entities.CharactersSource" />
+        </action>
     </fragment>
-    <fragment android:id="@+id/placeholder" />
+
+    <fragment android:id="@+id/characterDetailsFragment"
+        android:name="com.stefita.presentation.characters.CharacterDetailsFragment"
+        android:label="CharacterDetailFragment">
+        <argument
+            android:name="character"
+            app:argType="com.stefita.presentation.entities.CharactersSource" />
+
+    </fragment>
 </navigation>

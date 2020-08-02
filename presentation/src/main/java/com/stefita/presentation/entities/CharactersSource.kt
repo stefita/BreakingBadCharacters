@@ -1,5 +1,9 @@
 package com.stefita.presentation.entities
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class CharactersSource(
     val id: Int = 0,
     val name: String = "",
@@ -12,4 +16,4 @@ data class CharactersSource(
     val portrayed: String = "",
     val category: String = "",
     val betterCallSaulAppearance: List<Int>? = emptyList()
-)
+) : Parcelable

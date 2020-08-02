@@ -10,7 +10,6 @@ import com.stefita.domain.usecases.GetCharactersUseCase
 import com.stefita.domain.usecases.InsertCharactersUseCase
 import com.stefita.presentation.common.BaseViewModel
 import com.stefita.presentation.entities.CharactersSource
-import kotlinx.coroutines.Dispatchers
 
 class CharactersViewModel(
     private val getCharactersUseCase: GetCharactersUseCase,
@@ -34,7 +33,12 @@ class CharactersViewModel(
 
     fun loadData() {
         val params = GetCharactersUseCase.Params(100, 0)
-        getCharactersUseCase.invoke(viewModelScope, params) { it.fold(::handleFailure, ::handleSuccess) }
+        getCharactersUseCase.invoke(viewModelScope, params) {
+            it.fold(
+                ::handleFailure,
+                ::handleSuccess
+            )
+        }
     }
 
     private fun handleFailure(error: Failure) {

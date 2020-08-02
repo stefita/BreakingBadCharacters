@@ -9,7 +9,9 @@ import com.stefita.presentation.entities.CharactersSource
 import kotlinx.android.synthetic.main.character_item.view.*
 
 
-class CharactersListAdapter : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
+class CharactersListAdapter(
+    val onView: (CharactersSource) -> Unit
+) : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
 
     private var characters = mutableListOf<CharactersSource>()
 
@@ -29,14 +31,15 @@ class CharactersListAdapter : RecyclerView.Adapter<CharactersListAdapter.Charact
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bind(characters[position])
+        holder.bind(characters[position], onView)
     }
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(characterItem: CharactersSource) {
+        fun bind(characterItem: CharactersSource, onView: (CharactersSource) -> Unit) {
             with(itemView) {
                 name.text = characterItem.name
+                name.setOnClickListener { onView(characterItem) }
             }
         }
     }

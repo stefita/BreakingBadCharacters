@@ -9,8 +9,7 @@ import com.stefita.domain.entities.CharacterEntity
 interface CharactersDao {
 
     @Query("SELECT * FROM characters")
-    fun getAllCharacters(): List<CharacterData>
-
+    suspend fun getAllCharacters(): List<CharacterData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveAllCharacters(characters: List<CharacterData>)
