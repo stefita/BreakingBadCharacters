@@ -21,6 +21,8 @@ class CharactersViewModel(
         private const val TAG = "viewModel"
     }
 
+    var savedSearch = ""
+
     sealed class ListState {
         object Loading : ListState()
         object Empty : ListState()

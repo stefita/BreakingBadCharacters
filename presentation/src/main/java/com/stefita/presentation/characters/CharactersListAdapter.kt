@@ -36,6 +36,8 @@ class CharactersListAdapter(
         holder.bind(displayedCharacters[position], onView)
     }
 
+    fun isEmpty() = displayedCharacters.isEmpty()
+
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(characterItem: CharactersSource, onView: (CharactersSource) -> Unit) {

@@ -9,7 +9,9 @@
         android:label="CharactersListFragment" >
         <action
             android:id="@+id/toDetailesViewr"
-            app:destination="@id/characterDetailsFragment" >
+            app:destination="@id/characterDetailsFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/charactersListFragment">
             <argument
                 android:name="character"
                 app:argType="com.stefita.presentation.entities.CharactersSource" />

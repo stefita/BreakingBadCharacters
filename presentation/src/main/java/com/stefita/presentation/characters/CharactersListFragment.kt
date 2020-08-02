@@ -2,9 +2,10 @@ package com.stefita.presentation.characters
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import android.widget.SearchView
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ class CharactersListFragment
     private lateinit var binding: CharactersListFragmentBinding
     private lateinit var listAdapter: CharactersListAdapter
     private val viewModel by viewModel<CharactersViewModel>()
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +54,10 @@ class CharactersListFragment
                 }
                 is Success -> {
                     listAdapter.updateList(charState.characters)
+                    if (viewModel.savedSearch.isNotBlank()) {
+                        searchView.setQuery(viewModel.savedSearch, false)
+                        listAdapter.searchInList(viewModel.savedSearch)
+                    }
                 }
             }
         }
@@ -64,20 +70,27 @@ class CharactersListFragment
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         val menuItem = menu.findItem(R.id.search)
-        val search = menuItem.actionView as SearchView
-        searching(search)
+        searchView = menuItem.actionView as SearchView
+        setSearchListeners(searchView)
+        val spinner = menu.findItem(R.id.season).actionView as Spinner
+        val list = listOf("Season", 1,2,3,4)
+        val adapter = ArrayAdapter( requireContext(), android.R.layout.simple_spinner_item, list)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
         super.onPrepareOptionsMenu(menu)
     }
 
-    private fun searching(search: SearchView) {
+    private fun setSearchListeners(search: SearchView) {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { listAdapter.searchInList(it) }
+                viewModel.savedSearch = query ?: ""
                 return false
             }
 
             override fun onQueryTextChange(query: String): Boolean {
                 query.let { listAdapter.searchInList(it) }
+                viewModel.savedSearch = query
                 return true
             }
         })
