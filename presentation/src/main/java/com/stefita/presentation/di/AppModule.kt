@@ -10,6 +10,7 @@ import com.stefita.data.repository.CharactersCacheImpl
 import com.stefita.data.repository.CharactersRemoteImpl
 import com.stefita.domain.repositories.CharacterRepository
 import com.stefita.domain.usecases.GetCharactersUseCase
+import com.stefita.domain.usecases.InsertCharactersUseCase
 import com.stefita.presentation.characters.CharactersViewModel
 import com.stefita.presentation.common.AsyncFlowableTransformer
 import com.stefita.presentation.mapper.CharactersEntityMapper
@@ -31,6 +32,7 @@ val mRepositoryModules = module {
 
 val mUseCaseModules = module {
     factory(name = "getCharactersUseCase") { GetCharactersUseCase(transformer = AsyncFlowableTransformer(), repository = get()) }
+    factory(name = "insertCharactersUseCase") { InsertCharactersUseCase(repository = get()) }
 }
 
 val mNetworkModules = module {
@@ -44,7 +46,7 @@ val mLocalModules = module {
 
 val mViewModels = module {
     viewModel {
-        CharactersViewModel(getCharactersUseCase = get(GET_CHARACTERS_USECASE), mapper = CharactersEntityMapper())
+        CharactersViewModel(getCharactersUseCase = get(GET_CHARACTERS_USECASE), insertCharactersUseCase = get("insertCharactersUseCase"), mapper = CharactersEntityMapper())
     }
 }
 

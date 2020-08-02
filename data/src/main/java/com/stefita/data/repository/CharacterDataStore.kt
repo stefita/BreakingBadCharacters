@@ -1,8 +1,9 @@
 package com.stefita.data.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.stefita.domain.entities.CharacterEntity
-import io.reactivex.Flowable
 
 interface CharacterDataStore {
-    fun getCharacters(): Flowable<List<CharacterEntity>>
+    suspend fun getCharacters(): List<CharacterEntity>
 }

@@ -11,7 +11,13 @@ import kotlinx.android.synthetic.main.character_item.view.*
 
 class CharactersListAdapter : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
 
-    private var articles = mutableListOf<CharactersSource>()
+    private var characters = mutableListOf<CharactersSource>()
+
+    override fun getItemId(position: Int): Long = characters[position].id.toLong()
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.character_item, parent, false)
@@ -19,11 +25,11 @@ class CharactersListAdapter : RecyclerView.Adapter<CharactersListAdapter.Charact
     }
 
     override fun getItemCount(): Int {
-        return articles.size
+        return characters.size
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bind(articles[position])
+        holder.bind(characters[position])
     }
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,13 +41,12 @@ class CharactersListAdapter : RecyclerView.Adapter<CharactersListAdapter.Charact
         }
     }
 
-    fun updateList(list: List<CharactersSource>? = emptyList()) {
-        list?.let {
-            if (it.isNotEmpty()) {
-                articles.clear()
-                articles.addAll(it)
+    fun updateList(list: List<CharactersSource>) {
+
+            if (list.isNotEmpty()) {
+                characters.clear()
+                characters.addAll(list)
                 notifyDataSetChanged()
             }
-        }
     }
 }

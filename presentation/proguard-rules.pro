@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+# room
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**

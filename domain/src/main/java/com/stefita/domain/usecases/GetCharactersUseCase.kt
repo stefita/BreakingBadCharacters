@@ -1,21 +1,25 @@
 package com.stefita.domain.usecases
 
-import com.stefita.domain.common.BaseFlowableUseCase
-import com.stefita.domain.common.FlowableRxTransformer
+import com.stefita.domain.common.*
 import com.stefita.domain.entities.CharacterEntity
 import com.stefita.domain.repositories.CharacterRepository
-import io.reactivex.Flowable
+import kotlinx.coroutines.Deferred
 
 class GetCharactersUseCase(private val transformer: FlowableRxTransformer<List<CharacterEntity>>,
-                           private val repository: CharacterRepository):
-    BaseFlowableUseCase<List<CharacterEntity>>(transformer){
+                           private val repository: CharacterRepository) :
+    BaseUseCase<List<CharacterEntity>, GetCharactersUseCase.Params>() {
 
-    override fun createFlowable(data: Map<String, Any>?): Flowable<List<CharacterEntity>> {
-        return repository.getCharacters()
+
+    override suspend fun run(params: Params): Either<Failure, List<CharacterEntity>> {
+        return try {
+            val charactersList = repository.getCharacters()
+            Either.Right(charactersList)
+        } catch (exp: Exception) {
+            Either.Left(CharactersListFailure(exp))
+        }
     }
 
-    fun getCharacters(): Flowable<List<CharacterEntity>> {
-        val data = HashMap<String, String>()
-        return single(data)
-    }
+    data class Params(val limit: Int, val offset: Int)
+
+    data class CharactersListFailure(val error: Exception) : Failure.FeatureFailure(error)
 }

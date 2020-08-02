@@ -1,16 +1,24 @@
 package com.stefita.data.db.typeconverters
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 
 object TypeConverterListString {
 
-    @TypeConverter
-    @JvmStatic
-    fun listToJson(value: List<String>?)=  Gson().toJson(value)
+
+    private val type = Types.newParameterizedType(List::class.java, String::class.java)
+    private val adapter by lazy { Moshi.Builder().build().adapter<List<String>>(type) }
 
     @TypeConverter
     @JvmStatic
-    fun jsonToList(value: String): List<String>? =
-        Gson().fromJson(value, Array<String>::class.java).toList()
+    fun listToJson(value: List<String>?): String {
+        return adapter.toJson(value)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun jsonToList(value: String): List<String>? {
+        return adapter.fromJson(value)
+    }
 }

@@ -9,9 +9,8 @@ class CharactersRemoteImpl constructor(private val api: RemoteCharactersApi): Ch
 
     private val characterMapper = CharacterDataEntityMapper()
 
-    override fun getCharacters(): Flowable<List<CharacterEntity>> {
-        return api.getCharacters().map { list ->
-            list.map { characterMapper.mapCharacterToEntity(it) }
-        }
+    override suspend fun getCharacters(): List<CharacterEntity> {
+        val body = api.getCharacters().body() ?: return emptyList()
+        return body.map { characterMapper.mapCharacterToEntity(it) }
     }
 }

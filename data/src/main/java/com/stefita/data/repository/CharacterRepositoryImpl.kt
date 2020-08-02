@@ -1,24 +1,28 @@
 package com.stefita.data.repository
 
+import androidx.lifecycle.LiveData
 import com.stefita.domain.entities.CharacterEntity
 import com.stefita.domain.repositories.CharacterRepository
-import io.reactivex.Flowable
+import kotlinx.coroutines.Deferred
 
-class CharacterRepositoryImpl(private val remote: CharactersRemoteImpl,
-                              private val cache: CharactersCacheImpl): CharacterRepository {
+class CharacterRepositoryImpl(
+    private val remote: CharactersRemoteImpl,
+    private val cache: CharactersCacheImpl
+) : CharacterRepository {
 
-    override fun getLocalCharacters(): Flowable<List<CharacterEntity>> {
+    override suspend fun getLocalCharacters(): List<CharacterEntity> {
         return cache.getCharacters()
     }
 
-    override fun getRemoteCharacters(): Flowable<List<CharacterEntity>> {
+    override suspend fun getRemoteCharacters(): List<CharacterEntity> {
         return remote.getCharacters()
     }
 
-    override fun getCharacters(): Flowable<List<CharacterEntity>> {
-        val updateCharactersFlowable = getRemoteCharacters()
-        return getLocalCharacters().mergeWith(updateCharactersFlowable.doOnNext {
-            remoteCharacters -> cache.saveCharacters(remoteCharacters)
-        })
+    override suspend fun insertCharacters(list: List<CharacterEntity>) {
+        cache.saveCharacters(list)
+    }
+
+    override suspend fun getCharacters(): List<CharacterEntity> {
+        return getRemoteCharacters()
     }
 }

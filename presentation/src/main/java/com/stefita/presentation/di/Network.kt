@@ -1,5 +1,6 @@
 package com.stefita.presentation.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.stefita.presentation.BuildConfig
 import java.io.IOException
 import okhttp3.Interceptor
@@ -7,8 +8,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 fun createNetworkClient(baseUrl: String) =
@@ -35,6 +36,7 @@ private fun httpClient(): OkHttpClient {
         clientBuilder.addInterceptor(httpLoggingInterceptor)
     }
     clientBuilder.addInterceptor(BasicAuthInterceptor())
+    clientBuilder.addNetworkInterceptor(StethoInterceptor())
     clientBuilder.readTimeout(120, TimeUnit.SECONDS)
     clientBuilder.writeTimeout(120, TimeUnit.SECONDS)
     return clientBuilder.build()
@@ -44,6 +46,6 @@ private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit 
     Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(httpClient)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create())
         .build()

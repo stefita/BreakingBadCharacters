@@ -1,11 +1,11 @@
 package com.stefita.domain.repositories
 
 import com.stefita.domain.entities.CharacterEntity
-import io.reactivex.Flowable
 
 interface CharacterRepository {
 
-    fun getCharacters(): Flowable<List<CharacterEntity>>
-    fun getLocalCharacters(): Flowable<List<CharacterEntity>>
-    fun getRemoteCharacters(): Flowable<List<CharacterEntity>>
+    suspend fun getCharacters(): List<CharacterEntity>
+    suspend fun insertCharacters(list: List<CharacterEntity>)
+    suspend fun getLocalCharacters(): List<CharacterEntity>
+    suspend fun getRemoteCharacters(): List<CharacterEntity>
 }
