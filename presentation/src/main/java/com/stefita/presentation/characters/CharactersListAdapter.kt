@@ -15,6 +15,7 @@ class CharactersListAdapter(
 
     private var characters = mutableListOf<CharactersSource>()
     private var displayedCharacters = mutableListOf<CharactersSource>()
+    private var query = ""
 
     override fun getItemId(position: Int): Long = displayedCharacters[position].id.toLong()
 
@@ -36,8 +37,6 @@ class CharactersListAdapter(
         holder.bind(displayedCharacters[position], onView)
     }
 
-    fun isEmpty() = displayedCharacters.isEmpty()
-
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(characterItem: CharactersSource, onView: (CharactersSource) -> Unit) {
@@ -58,18 +57,12 @@ class CharactersListAdapter(
         }
     }
 
-    fun searchInList(query: String) {
-        displayedCharacters = characters.filter {
-            it.name.contains(query, ignoreCase = true)
-        }.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    fun filterForSeason(season: Int) {
+    fun filter(query: String = "", season: Int = 0) {
         val selectedSeason = if (season > 0) season else null
         displayedCharacters = selectedSeason?.let { selection ->
             characters.filter {
-                it.appearance.contains(selection)
+                it.appearance.contains(selection) &&
+                        it.name.contains(query, ignoreCase = true)
             }.toMutableList()
         } ?: characters
         notifyDataSetChanged()

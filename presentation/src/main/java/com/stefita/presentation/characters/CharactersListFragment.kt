@@ -1,7 +1,6 @@
 package com.stefita.presentation.characters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +25,7 @@ class CharactersListFragment
     private lateinit var searchView: SearchView
     private lateinit var spinner: Spinner
     private lateinit var spinnerAdapter: ArrayAdapter<DropDownItem>
-    private var availableSeasons: MutableList<Int> = mutableListOf()
+    private var availableSeasons: MutableList<DropDownItem> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +56,10 @@ class CharactersListFragment
                 is Success -> {
                     listAdapter.updateList(charState.characters)
                     updateSpinnerEpisodes(charState.availableSeasons)
-                    if (viewModel.savedSearch.isNotBlank()) {
-                        searchView.setQuery(viewModel.savedSearch, false)
-                        listAdapter.searchInList(viewModel.savedSearch)
+                    if (viewModel.savedQuery.isNotBlank() || viewModel.savedSeason > 0) {
+                        searchView.setQuery(viewModel.savedQuery, false)
+                        spinner.setSelection(viewModel.savedSeason)
+                        listAdapter.filter(viewModel.savedQuery, viewModel.savedSeason)
                     }
                 }
             }
@@ -79,15 +79,18 @@ class CharactersListFragment
         super.onPrepareOptionsMenu(menu)
     }
 
-    private fun setupSpinner(list: MutableList<Int> = mutableListOf()) {
-        val seasonsPairs = list.map { DropDownItem(it, "Season $it") }
-        spinnerAdapter = ArrayAdapter( requireContext(), android.R.layout.simple_spinner_item, seasonsPairs)
+    private fun setupSpinner(list: MutableList<DropDownItem> = mutableListOf()) {
+        spinnerAdapter = ArrayAdapter( requireContext(), android.R.layout.simple_spinner_item, list)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerAdapter.setNotifyOnChange(true)
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, season: Int, l: Long) {
-                listAdapter.filterForSeason(season)
+
+            override fun onItemSelected(
+                adapterView: AdapterView<*>, view: View, season: Int, l: Long
+            ) {
+                viewModel.savedSeason = availableSeasons[season].index
+                listAdapter.filter(searchView.query.toString(), viewModel.savedSeason)
             }
             override fun onNothingSelected(adapterView: AdapterView<*>) {
             }
@@ -95,23 +98,23 @@ class CharactersListFragment
     }
 
     private fun updateSpinnerEpisodes(list: List<Int>) {
-        spinnerAdapter.clear()
-        spinnerAdapter.add(DropDownItem(0, getString(R.string.seasons)))
-        spinnerAdapter.addAll(list.map { DropDownItem(it, "Season $it") })
+        availableSeasons.clear()
+        availableSeasons.add(DropDownItem(0, getString(R.string.seasons)))
+        availableSeasons.addAll(list.map { DropDownItem(it, "Season $it") })
         spinnerAdapter.notifyDataSetChanged()
     }
 
     private fun setSearchListeners(search: SearchView) {
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { listAdapter.searchInList(it) }
-                viewModel.savedSearch = query ?: ""
+                query?.let { listAdapter.filter(it, (spinner.selectedItem as DropDownItem).index) }
+                viewModel.savedQuery = query ?: ""
                 return false
             }
 
             override fun onQueryTextChange(query: String): Boolean {
-                query.let { listAdapter.searchInList(it) }
-                viewModel.savedSearch = query
+                query.let { listAdapter.filter(it, (spinner.selectedItem as DropDownItem).index) }
+                viewModel.savedQuery = query
                 return true
             }
         })

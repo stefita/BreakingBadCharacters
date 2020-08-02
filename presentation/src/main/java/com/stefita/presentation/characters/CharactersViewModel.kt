@@ -21,12 +21,16 @@ class CharactersViewModel(
         private const val TAG = "viewModel"
     }
 
-    var savedSearch = ""
+    var savedQuery = ""
+    var savedSeason = 0
 
     sealed class ListState {
         object Loading : ListState()
         object Empty : ListState()
-        data class Success(val characters: List<CharactersSource>, val availableSeasons: List<Int>) : ListState()
+        data class Success(
+            val characters: List<CharactersSource>,
+            val availableSeasons: List<Int>
+        ) : ListState()
     }
 
     val state = MutableLiveData<ListState>().apply {
