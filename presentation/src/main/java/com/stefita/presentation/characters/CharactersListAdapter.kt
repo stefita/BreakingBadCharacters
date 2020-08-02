@@ -14,24 +14,26 @@ class CharactersListAdapter(
 ) : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
 
     private var characters = mutableListOf<CharactersSource>()
+    private var displayedCharacters = mutableListOf<CharactersSource>()
 
-    override fun getItemId(position: Int): Long = characters[position].id.toLong()
+    override fun getItemId(position: Int): Long = displayedCharacters[position].id.toLong()
 
     init {
         setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.character_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.character_item, parent, false)
         return CharacterViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return characters.size
+        return displayedCharacters.size
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bind(characters[position], onView)
+        holder.bind(displayedCharacters[position], onView)
     }
 
     class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,11 +47,19 @@ class CharactersListAdapter(
     }
 
     fun updateList(list: List<CharactersSource>) {
+        if (list.isNotEmpty()) {
+            characters.clear()
+            characters.addAll(list)
+            displayedCharacters.clear()
+            displayedCharacters.addAll(characters)
+            notifyDataSetChanged()
+        }
+    }
 
-            if (list.isNotEmpty()) {
-                characters.clear()
-                characters.addAll(list)
-                notifyDataSetChanged()
-            }
+    fun searchInList(query: String) {
+        displayedCharacters = characters.filter {
+            it.name.contains(query, ignoreCase = true)
+        }.toMutableList()
+        notifyDataSetChanged()
     }
 }

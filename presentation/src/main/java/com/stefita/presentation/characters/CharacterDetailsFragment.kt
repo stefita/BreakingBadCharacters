@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.stefita.presentation.databinding.CharacterDetailsFragmentBinding
@@ -21,10 +22,8 @@ class CharacterDetailsFragment : Fragment() {
     ): View? {
         binding = CharacterDetailsFragmentBinding.inflate(layoutInflater)
         binding.character = args.character
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 }
