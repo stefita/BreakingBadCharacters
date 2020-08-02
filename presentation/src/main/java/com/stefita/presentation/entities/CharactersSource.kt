@@ -16,4 +16,11 @@ data class CharactersSource(
     val portrayed: String = "",
     val category: String = "",
     val betterCallSaulAppearance: List<Int>? = emptyList()
-) : Parcelable
+) : Parcelable {
+
+    val occupations
+        get() = occupation.joinToString { it }
+
+    val appearances
+        get() = appearance.joinToString { "Season $it" }
+}

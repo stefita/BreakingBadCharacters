@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stefita.presentation.R
+import com.stefita.presentation.common.extensions.loadUrl
 import com.stefita.presentation.entities.CharactersSource
 import kotlinx.android.synthetic.main.character_item.view.*
 
@@ -42,7 +43,8 @@ class CharactersListAdapter(
         fun bind(characterItem: CharactersSource, onView: (CharactersSource) -> Unit) {
             with(itemView) {
                 name.text = characterItem.name
-                name.setOnClickListener { onView(characterItem) }
+                card.setOnClickListener { onView(characterItem) }
+                picture.loadUrl(characterItem.img)
             }
         }
     }

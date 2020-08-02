@@ -84,6 +84,9 @@ dependencies {
     implementation "com.facebook.stetho:stetho:$stetho_version"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
 
+    // https://github.com/coil-kt/coil
+    implementation("io.coil-kt:coil:0.8.0")
+
     implementation project(':data')
     implementation project(':domain')
 

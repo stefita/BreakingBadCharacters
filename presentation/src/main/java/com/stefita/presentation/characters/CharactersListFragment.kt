@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stefita.presentation.R
@@ -34,7 +35,7 @@ class CharactersListFragment
     ): View? {
         binding = CharactersListFragmentBinding.inflate(layoutInflater)
         with(binding.recyclerView) {
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 3)
             listAdapter = CharactersListAdapter(::viewCharacterDetails)
             adapter = listAdapter
             setHasFixedSize(true)
