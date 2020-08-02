@@ -1,10 +1,9 @@
 package com.stefita.presentation.characters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -25,6 +24,9 @@ class CharactersListFragment
     private lateinit var listAdapter: CharactersListAdapter
     private val viewModel by viewModel<CharactersViewModel>()
     private lateinit var searchView: SearchView
+    private lateinit var spinner: Spinner
+    private lateinit var spinnerAdapter: ArrayAdapter<DropDownItem>
+    private var availableSeasons: MutableList<Int> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,7 @@ class CharactersListFragment
                 }
                 is Success -> {
                     listAdapter.updateList(charState.characters)
+                    updateSpinnerEpisodes(charState.availableSeasons)
                     if (viewModel.savedSearch.isNotBlank()) {
                         searchView.setQuery(viewModel.savedSearch, false)
                         listAdapter.searchInList(viewModel.savedSearch)
@@ -61,7 +64,6 @@ class CharactersListFragment
                 }
             }
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -72,12 +74,31 @@ class CharactersListFragment
         val menuItem = menu.findItem(R.id.search)
         searchView = menuItem.actionView as SearchView
         setSearchListeners(searchView)
-        val spinner = menu.findItem(R.id.season).actionView as Spinner
-        val list = listOf("Season", 1,2,3,4)
-        val adapter = ArrayAdapter( requireContext(), android.R.layout.simple_spinner_item, list)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+        spinner = menu.findItem(R.id.season).actionView as Spinner
+        setupSpinner(availableSeasons)
         super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun setupSpinner(list: MutableList<Int> = mutableListOf()) {
+        val seasonsPairs = list.map { DropDownItem(it, "Season $it") }
+        spinnerAdapter = ArrayAdapter( requireContext(), android.R.layout.simple_spinner_item, seasonsPairs)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerAdapter.setNotifyOnChange(true)
+        spinner.adapter = spinnerAdapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, season: Int, l: Long) {
+                listAdapter.filterForSeason(season)
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) {
+            }
+        }
+    }
+
+    private fun updateSpinnerEpisodes(list: List<Int>) {
+        spinnerAdapter.clear()
+        spinnerAdapter.add(DropDownItem(0, getString(R.string.seasons)))
+        spinnerAdapter.addAll(list.map { DropDownItem(it, "Season $it") })
+        spinnerAdapter.notifyDataSetChanged()
     }
 
     private fun setSearchListeners(search: SearchView) {
@@ -99,5 +120,12 @@ class CharactersListFragment
     private fun viewCharacterDetails(character: CharactersSource) {
         val action = CharactersListFragmentDirections.toDetailesViewr(character)
         findNavController().navigate(action)
+    }
+}
+
+data class DropDownItem(val index: Int, val name: String) {
+
+    override fun toString(): String {
+        return name
     }
 }

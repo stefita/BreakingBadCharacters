@@ -64,4 +64,14 @@ class CharactersListAdapter(
         }.toMutableList()
         notifyDataSetChanged()
     }
+
+    fun filterForSeason(season: Int) {
+        val selectedSeason = if (season > 0) season else null
+        displayedCharacters = selectedSeason?.let { selection ->
+            characters.filter {
+                it.appearance.contains(selection)
+            }.toMutableList()
+        } ?: characters
+        notifyDataSetChanged()
+    }
 }

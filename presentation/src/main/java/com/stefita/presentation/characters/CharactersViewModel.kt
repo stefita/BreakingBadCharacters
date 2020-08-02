@@ -26,7 +26,7 @@ class CharactersViewModel(
     sealed class ListState {
         object Loading : ListState()
         object Empty : ListState()
-        data class Success(val characters: List<CharactersSource>) : ListState()
+        data class Success(val characters: List<CharactersSource>, val availableSeasons: List<Int>) : ListState()
     }
 
     val state = MutableLiveData<ListState>().apply {
@@ -53,9 +53,15 @@ class CharactersViewModel(
             list.isEmpty() -> state.value = ListState.Empty
             list.isNotEmpty() -> {
                 insertCharactersUseCase.invoke(viewModelScope, InsertCharactersUseCase.Params(list))
-                state.value = ListState.Success(mapToPresentation(list))
+                val charactersSourceList = mapToPresentation(list)
+                val seasonsList = extractAvailableSeasons(charactersSourceList)
+                state.value = ListState.Success(charactersSourceList, seasonsList)
             }
         }
+    }
+
+    private fun extractAvailableSeasons(list: List<CharactersSource>): MutableList<Int> {
+        return list.map { it.appearance }.flatten().distinct().sorted().toMutableList()
     }
 
     private fun mapToPresentation(characters: List<CharacterEntity>): List<CharactersSource> {
