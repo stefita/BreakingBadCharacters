@@ -102,7 +102,6 @@ class CharactersListFragment
         availableSeasons.clear()
         availableSeasons.add(DropDownItem(0, getString(R.string.seasons)))
         availableSeasons.addAll(list.map { DropDownItem(it, "Season $it") })
-        spinnerAdapter.notifyDataSetChanged()
     }
 
     private fun setSearchListeners(search: SearchView) {
