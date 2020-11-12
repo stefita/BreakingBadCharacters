@@ -12,7 +12,7 @@ data class CharactersSource(
     val img: String = "",
     val status: String = "",
     val nickname: String = "",
-    val appearance: List<Int> = emptyList(),
+    val appearance: List<Int>? = emptyList(),
     val portrayed: String = "",
     val category: String = "",
     val betterCallSaulAppearance: List<Int>? = emptyList()
@@ -22,5 +22,5 @@ data class CharactersSource(
         get() = occupation.joinToString { it }
 
     val appearances
-        get() = appearance.joinToString { "Season $it" }
+        get() = appearance?.joinToString { "Season $it" } ?: ""
 }

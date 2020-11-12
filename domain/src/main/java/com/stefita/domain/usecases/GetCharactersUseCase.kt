@@ -1,12 +1,11 @@
 package com.stefita.domain.usecases
 
-import com.stefita.domain.common.*
+import com.stefita.domain.common.Either
+import com.stefita.domain.common.Failure
 import com.stefita.domain.entities.CharacterEntity
 import com.stefita.domain.repositories.CharacterRepository
-import kotlinx.coroutines.Deferred
 
-class GetCharactersUseCase(private val transformer: FlowableRxTransformer<List<CharacterEntity>>,
-                           private val repository: CharacterRepository) :
+class GetCharactersUseCase(private val repository: CharacterRepository) :
     BaseUseCase<List<CharacterEntity>, GetCharactersUseCase.Params>() {
 
 

@@ -65,7 +65,7 @@ class CharactersViewModel(
     }
 
     private fun extractAvailableSeasons(list: List<CharactersSource>): MutableList<Int> {
-        return list.map { it.appearance }.flatten().distinct().sorted().toMutableList()
+        return list.map { it.appearance ?: emptyList() }.flatten().distinct().sorted().toMutableList()
     }
 
     private fun mapToPresentation(characters: List<CharacterEntity>): List<CharactersSource> {

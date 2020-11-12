@@ -63,7 +63,7 @@ class CharactersListAdapter(
         val seasonSel = if (season > 0) season else null
         displayedCharacters = characters.filter { list ->
             list.name.contains(query, ignoreCase = true) &&
-                    seasonSel?.let { list.appearance.contains(it) } ?: true
+                    seasonSel?.let { list.appearance?.contains(it) } ?: true
         }.toMutableList()
         notifyDataSetChanged()
     }

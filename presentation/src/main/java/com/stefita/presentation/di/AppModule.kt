@@ -31,7 +31,7 @@ val mRepositoryModules = module {
 }
 
 val mUseCaseModules = module {
-    factory(name = "getCharactersUseCase") { GetCharactersUseCase(transformer = AsyncFlowableTransformer(), repository = get()) }
+    factory(name = "getCharactersUseCase") { GetCharactersUseCase(repository = get()) }
     factory(name = "insertCharactersUseCase") { InsertCharactersUseCase(repository = get()) }
 }
 
