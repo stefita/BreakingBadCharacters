@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CharactersCacheImpl(
-    private val database: CharactersDatabase,
+    database: CharactersDatabase,
     private val entityToDataMapper: CharacterEntityDataMapper,
     private val dataToEntityMapper: CharacterDataEntityMapper
 ) : CharacterDataStore {

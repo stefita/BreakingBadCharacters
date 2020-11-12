@@ -11,12 +11,11 @@ import kotlinx.android.synthetic.main.character_item.view.*
 
 
 class CharactersListAdapter(
-    val onView: (CharactersSource) -> Unit
+    private val onView: (CharactersSource) -> Unit
 ) : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
 
     private var characters = mutableListOf<CharactersSource>()
     private var displayedCharacters = mutableListOf<CharactersSource>()
-    private var query = ""
 
     override fun getItemId(position: Int): Long = displayedCharacters[position].id.toLong()
 

@@ -12,7 +12,6 @@ import com.stefita.domain.repositories.CharacterRepository
 import com.stefita.domain.usecases.GetCharactersUseCase
 import com.stefita.domain.usecases.InsertCharactersUseCase
 import com.stefita.presentation.characters.CharactersViewModel
-import com.stefita.presentation.common.AsyncFlowableTransformer
 import com.stefita.presentation.mapper.CharactersEntityMapper
 import org.koin.dsl.module.module
 import org.koin.android.ext.koin.androidApplication

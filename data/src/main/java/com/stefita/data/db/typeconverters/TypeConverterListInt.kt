@@ -4,7 +4,6 @@ import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 
-
 object TypeConverterListInt {
 
     private val type = Types.newParameterizedType(List::class.java, Int::class.javaObjectType)

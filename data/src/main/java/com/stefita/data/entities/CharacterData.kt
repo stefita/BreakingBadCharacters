@@ -2,8 +2,6 @@ package com.stefita.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.stefita.domain.entities.CharacterEntity
 
 @Entity(tableName = "characters")
@@ -22,7 +20,7 @@ data class CharacterData(
     var betterCallSaulAppearance: List<Int>? = emptyList()
 )
 
-class CharacterDataEntityMapper constructor() {
+class CharacterDataEntityMapper {
 
     fun mapCharacterToEntity(data: CharacterData): CharacterEntity = CharacterEntity(
         id = data.char_id,
@@ -39,7 +37,7 @@ class CharacterDataEntityMapper constructor() {
     )
 }
 
-class CharacterEntityDataMapper  {
+class CharacterEntityDataMapper {
 
     fun mapCharacterToData(response: CharacterEntity): CharacterData = CharacterData(
         char_id = response.id,

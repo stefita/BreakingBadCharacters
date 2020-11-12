@@ -7,15 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.stefita.presentation.R
 import com.stefita.presentation.characters.CharactersViewModel.ListState.*
 import com.stefita.presentation.common.extensions.observe
 import com.stefita.presentation.databinding.CharactersListFragmentBinding
 import com.stefita.presentation.entities.CharactersSource
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class CharactersListFragment
     : Fragment() {

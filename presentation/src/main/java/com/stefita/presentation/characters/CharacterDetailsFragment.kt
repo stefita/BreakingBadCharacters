@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.stefita.presentation.databinding.CharacterDetailsFragmentBinding
-import com.stefita.presentation.databinding.CharactersListFragmentBinding
 
 class CharacterDetailsFragment : Fragment() {
 

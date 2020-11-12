@@ -7,7 +7,7 @@ import com.stefita.data.db.typeconverters.TypeConverterListInt
 import com.stefita.data.db.typeconverters.TypeConverterListString
 import com.stefita.data.entities.CharacterData
 
-@Database(entities = arrayOf(CharacterData::class), version = 1, exportSchema = false)
+@Database(entities = [CharacterData::class], version = 1, exportSchema = false)
 @TypeConverters(
     TypeConverterListString::class,
     TypeConverterListInt::class
